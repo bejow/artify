@@ -16,6 +16,7 @@ class App extends Component {
 
   componentDidMount(){
     let parsed = queryString.parse(window.location.search);
+    console.log(parsed);
     let access_token = parsed.access_token;
     let refresh_token = parsed.refresh_token;
     
