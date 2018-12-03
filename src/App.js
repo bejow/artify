@@ -133,7 +133,7 @@ class App extends Component {
         onSongClick={this.fetchAnalyseSong}
         currentSong={this.state.currentSong} 
         recentSongs={this.state.recentSongs}/>:
-        <p>PlayHistory not loaded</p>
+        <p>PlayHistory not loaded (Is your Spotify running?)</p>
 
   }
 
