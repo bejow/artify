@@ -3,12 +3,18 @@ import logo from './logo.svg';
 import './App.css';
 import queryString from 'query-string';
 import {JsonDisplay} from './components/JsonDisplay';
+import Sketch from './components/Sketch';
+import {PlayHistory} from './components/PlayHistory';
 //test
 
 const API_PROFILE_URL = 'https://api.spotify.com/v1/me';
 const API_RECENTLY_PLAYED_URL = 'https://api.spotify.com/v1/me/player/recently-played'; 
 const API_SAVED_SONGS_URL = 'https://api.spotify.com/v1/me/tracks';
 const API_PLAYLISTS_URL = 'https://api.spotify.com/v1/me/playlists';
+const API_CURRENTLY_PLAYING_URL = 'https://api.spotify.com/v1/me/player/currently-playing';
+const API_PLAY_URL = 'https://api.spotify.com/v1/me/player/play';//put
+const API_PAUSE_URL = 'https://api.spotify.com/v1/me/player/pause';//put
+const API_AVAILABLE_PLAYER_URL = 'https://api.spotify.com/v1/me/player/devices';
 
 class App extends Component {
   constructor(){
@@ -17,46 +23,122 @@ class App extends Component {
       serverData:{},
       access_token:null,
       refresh_token:null,
+      response:null,
+      currentSong:null,
+      recentSongs:null,
+      loaded:false,
     }
+    this.fetchApi = this.fetchApi.bind(this);
+    this.addTracksFromJsonResponse = this.addTracksFromJsonResponse.bind(this);
+    this.addCurrentlyPlayingTrack = this.addCurrentlyPlayingTrack.bind(this);
   }
 
   componentDidMount(){
-    
+    //get url parameters (spotify - tokens)
     let parsed = queryString.parse(window.location.search);
     let access_token = parsed.access_token;
     let refresh_token = parsed.refresh_token;
     this.setState({
       access_token,
       refresh_token,
+    }, () => {
+      this.initPlayHistory();
     })
-    this.fetchApi = this.fetchApi.bind(this);
-
   }
 
-  fetchApi(access_token, base_url, params){
+  initPlayHistory(){
+    //requests the songdata for displaying a play history
+    this.fetchApi(this.state.access_token, API_CURRENTLY_PLAYING_URL, this.addCurrentlyPlayingTrack, () => {
+      this.fetchApi(this.state.access_token, API_RECENTLY_PLAYED_URL, this.addTracksFromJsonResponse, () =>{
+        this.setState({
+          loaded:true,
+        })
+      })
+    });
+  }
+
+  addTracksFromJsonResponse(jsonResponse, callback){
+    var recentSongs = {}
+    console.log(jsonResponse.items);
+    for (let i = 0; i < jsonResponse.items.length; i++){
+      recentSongs[jsonResponse.items[i].track.id] = jsonResponse.items[i].track;
+      console.log(jsonResponse.items[i]);
+    }
+    this.setState({
+      recentSongs
+    },callback?callback:null)
+  }
+
+  addCurrentlyPlayingTrack(jsonResponse, callback){
+    this.setState({
+      currentSong: jsonResponse.item
+    }, callback?callback:null)
+  }
+
+  putApi(access_token, url, processDataFunction){
+    const options = {
+      headers: { 'Authorization': 'Bearer ' + access_token },
+      method:'PUT',
+    }
+    fetch(url, options)
+    .then((response) => {
+      console.log(response);
+      return response.json()
+    })
+    .then((data) => {
+      if(processDataFunction){
+        processDataFunction(data);
+      }
+      else{
+        this.setState({
+          response:data,
+        });
+      }
+    });
+  }
+
+  fetchApi(access_token, url, processDataFunction, callback){
     const options = {
       headers: { 'Authorization': 'Bearer ' + access_token }
     }
 
-    fetch(base_url, options)
+    fetch(url, options)
     .then((response) => {
-      return response.json();
+      console.log(response);
+      return response.json()
     })
     .then((data) => {
-      this.setState({
-        serverData:data,
-      })
+      if(processDataFunction){
+        console.log("process function delivered")
+        processDataFunction(data, callback);
+      }
+      else{
+        this.setState({
+          serverData:data,
+        });
+      }
     })
   }
+
+  renderPlayHistory(){
+    return this.state.loaded ? <PlayHistory 
+        currentSong={this.state.currentSong} 
+        recentSongs={this.state.recentSongs}/>:
+        <p>PlayHistory not loaded</p>
+
+  }
+
   render() {
     console.log(this.state);
     return (
       <div className="App">
+        <Sketch/>
+        {this.renderPlayHistory()}
         <header className="App-header">
           <button onClick={() => this.fetchApi(this.state.access_token, API_PROFILE_URL)}>
             Fetch Profile
           </button> 
-          <button onClick={() => this.fetchApi(this.state.access_token, API_RECENTLY_PLAYED_URL)}>
+          <button onClick={() => this.fetchApi(this.state.access_token, API_RECENTLY_PLAYED_URL, this.addTracksFromJsonResponse)}>
             Fetch Recent Songs
           </button> 
           <button onClick={() => this.fetchApi(this.state.access_token, API_SAVED_SONGS_URL)}>
@@ -64,6 +146,12 @@ class App extends Component {
           </button>
           <button onClick={() => this.fetchApi(this.state.access_token, API_PLAYLISTS_URL)}>
             Fetch Playlists
+          </button>
+          <button onClick={() => this.fetchApi(this.state.access_token, API_AVAILABLE_PLAYER_URL)}>
+            Get Player
+          </button>
+          <button onClick={() => this.fetchApi(this.state.access_token, API_CURRENTLY_PLAYING_URL, this.addCurrentlyPlayingTrack)}>
+            Currently Played
           </button>
           {/*<JsonDisplay json={formatRecentlyPlayedSongs(this.state.serverData)}/>*/}
           <JsonDisplay json={this.state.serverData}/>
