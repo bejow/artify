@@ -15,6 +15,7 @@ const API_CURRENTLY_PLAYING_URL = 'https://api.spotify.com/v1/me/player/currentl
 const API_PLAY_URL = 'https://api.spotify.com/v1/me/player/play';//put
 const API_PAUSE_URL = 'https://api.spotify.com/v1/me/player/pause';//put
 const API_AVAILABLE_PLAYER_URL = 'https://api.spotify.com/v1/me/player/devices';
+const API_AUDIO_FEATURES_URL = 'https://api.spotify.com/v1/audio-features'
 
 class App extends Component {
   constructor(){
@@ -26,11 +27,12 @@ class App extends Component {
       response:null,
       currentSong:null,
       recentSongs:null,
-      loaded:false,
+      analyzedSong:null,
     }
     this.fetchApi = this.fetchApi.bind(this);
     this.addTracksFromJsonResponse = this.addTracksFromJsonResponse.bind(this);
     this.addCurrentlyPlayingTrack = this.addCurrentlyPlayingTrack.bind(this);
+    this.fetchAnalyseSong = this.fetchAnalyseSong.bind(this);
   }
 
   componentDidMount(){
@@ -44,6 +46,12 @@ class App extends Component {
     }, () => {
       this.initPlayHistory();
     })
+  }
+
+  fetchAnalyseSong(songId){
+    this.fetchApi(this.state.access_token, 
+      API_AUDIO_FEATURES_URL+'?ids='+songId, 
+      (data) => {this.setState({analyzedSong:data})} )
   }
 
   initPlayHistory(){
@@ -122,6 +130,7 @@ class App extends Component {
 
   renderPlayHistory(){
     return this.state.loaded ? <PlayHistory 
+        onSongClick={this.fetchAnalyseSong}
         currentSong={this.state.currentSong} 
         recentSongs={this.state.recentSongs}/>:
         <p>PlayHistory not loaded</p>
@@ -133,8 +142,10 @@ class App extends Component {
     return (
       <div className="App">
         <Sketch/>
-        {this.renderPlayHistory()}
+        
         <header className="App-header">
+          <JsonDisplay json={this.state.analyzedSong}/>
+          {this.renderPlayHistory()}
           <button onClick={() => this.fetchApi(this.state.access_token, API_PROFILE_URL)}>
             Fetch Profile
           </button> 
