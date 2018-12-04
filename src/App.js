@@ -107,15 +107,18 @@ class App extends Component {
 
   fetchApi(access_token, url, processDataFunction, callback){
     const options = {
-      headers: { 'Authorization': 'Bearer ' + access_token }
+      headers: { 'Authorization': 'Bearer ' + access_token },
+      mode:'cors',
     }
 
     fetch(url, options)
     .then((response) => {
       console.log(response);
-      return response.json()
+      return response.text();
     })
-    .then((data) => {
+    .then((text) => {
+      var data;
+      text ? data = JSON.parse(text) : data = {};
       if(processDataFunction){
         console.log("process function delivered")
         processDataFunction(data, callback);
