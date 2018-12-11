@@ -5,7 +5,8 @@ import queryString from 'query-string';
 import {JsonDisplay} from './components/JsonDisplay';
 import Sketch from './components/Sketch';
 import {PlayHistory} from './components/PlayHistory';
-//test
+import './styles/style.css';
+import MainView from './views/MainView';
 
 const API_PROFILE_URL = 'https://api.spotify.com/v1/me';
 const API_RECENTLY_PLAYED_URL = 'https://api.spotify.com/v1/me/player/recently-played'; 
@@ -15,7 +16,7 @@ const API_CURRENTLY_PLAYING_URL = 'https://api.spotify.com/v1/me/player/currentl
 const API_PLAY_URL = 'https://api.spotify.com/v1/me/player/play';//put
 const API_PAUSE_URL = 'https://api.spotify.com/v1/me/player/pause';//put
 const API_AVAILABLE_PLAYER_URL = 'https://api.spotify.com/v1/me/player/devices';
-const API_AUDIO_FEATURES_URL = 'https://api.spotify.com/v1/audio-features'
+const API_AUDIO_FEATURES_URL = 'https://api.spotify.com/v1/audio-features';
 
 class App extends Component {
   constructor(){
@@ -28,6 +29,7 @@ class App extends Component {
       currentSong:null,
       recentSongs:null,
       analyzedSong:null,
+      developerMode:false,
     }
     this.fetchApi = this.fetchApi.bind(this);
     this.addTracksFromJsonResponse = this.addTracksFromJsonResponse.bind(this);
@@ -66,7 +68,7 @@ class App extends Component {
   }
 
   addTracksFromJsonResponse(jsonResponse, callback){
-    var recentSongs = {}
+    var recentSongs = {};
     console.log(jsonResponse.items);
     for (let i = 0; i < jsonResponse.items.length; i++){
       recentSongs[jsonResponse.items[i].track.id] = jsonResponse.items[i].track;
@@ -137,40 +139,49 @@ class App extends Component {
         currentSong={this.state.currentSong} 
         recentSongs={this.state.recentSongs}/>:
         <p>PlayHistory not loaded (Is your Spotify running?)</p>
+  }
 
+  renderApp(){
+    if (this.state.developerMode){
+      return(
+        <div style={{height:"100vh"}}>
+          <Sketch/>
+          <header className="App-header">
+            <JsonDisplay json={this.state.analyzedSong}/>
+            {this.renderPlayHistory()}
+            <button onClick={() => this.fetchApi(this.state.access_token, API_PROFILE_URL)}>
+              Fetch Profile
+            </button> 
+            <button onClick={() => this.fetchApi(this.state.access_token, API_RECENTLY_PLAYED_URL, this.addTracksFromJsonResponse)}>
+              Fetch Recent Songs
+            </button> 
+            <button onClick={() => this.fetchApi(this.state.access_token, API_SAVED_SONGS_URL)}>
+              Fetch Saved Songs
+            </button>
+            <button onClick={() => this.fetchApi(this.state.access_token, API_PLAYLISTS_URL)}>
+              Fetch Playlists
+            </button>
+            <button onClick={() => this.fetchApi(this.state.access_token, API_AVAILABLE_PLAYER_URL)}>
+              Get Player
+            </button>
+            <button onClick={() => this.fetchApi(this.state.access_token, API_CURRENTLY_PLAYING_URL, this.addCurrentlyPlayingTrack)}>
+              Currently Played
+            </button>
+            {/*<JsonDisplay json={formatRecentlyPlayedSongs(this.state.serverData)}/>*/}
+            <JsonDisplay json={this.state.serverData}/>
+          </header>
+        </div>
+      )
+    }
+    else{
+      return (<MainView/>);
+    }
   }
 
   render() {
     console.log(this.state);
     return (
-      <div className="App">
-        <Sketch/>
-        
-        <header className="App-header">
-          <JsonDisplay json={this.state.analyzedSong}/>
-          {this.renderPlayHistory()}
-          <button onClick={() => this.fetchApi(this.state.access_token, API_PROFILE_URL)}>
-            Fetch Profile
-          </button> 
-          <button onClick={() => this.fetchApi(this.state.access_token, API_RECENTLY_PLAYED_URL, this.addTracksFromJsonResponse)}>
-            Fetch Recent Songs
-          </button> 
-          <button onClick={() => this.fetchApi(this.state.access_token, API_SAVED_SONGS_URL)}>
-            Fetch Saved Songs
-          </button>
-          <button onClick={() => this.fetchApi(this.state.access_token, API_PLAYLISTS_URL)}>
-            Fetch Playlists
-          </button>
-          <button onClick={() => this.fetchApi(this.state.access_token, API_AVAILABLE_PLAYER_URL)}>
-            Get Player
-          </button>
-          <button onClick={() => this.fetchApi(this.state.access_token, API_CURRENTLY_PLAYING_URL, this.addCurrentlyPlayingTrack)}>
-            Currently Played
-          </button>
-          {/*<JsonDisplay json={formatRecentlyPlayedSongs(this.state.serverData)}/>*/}
-          <JsonDisplay json={this.state.serverData}/>
-        </header>
-      </div>
+      	this.renderApp()
     );
   }
 }

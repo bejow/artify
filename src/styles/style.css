@@ -1,0 +1,35 @@
+.settingsBox{
+    width:200px;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.upperPart{
+    height:85%;
+    width: 100%;
+    display: flex;
+}
+
+.lowerPart{
+    height:15%;
+    width:100%;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.settingsRow{
+    display:flex;
+}
+
+.profilePicture{
+    width:80px;
+    height:80px;
+}
+
+.startButton{
+    width:200px
+}
