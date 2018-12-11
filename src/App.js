@@ -174,7 +174,12 @@ class App extends Component {
       )
     }
     else{
-      return (<MainView/>);
+      return (
+      <MainView
+        onStart={this.fetchAnalyseSong}
+        currentSong={this.state.currentSong}
+        currentSongData={this.state.analyzedSong}/>
+      );
     }
   }
 

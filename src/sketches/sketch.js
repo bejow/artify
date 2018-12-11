@@ -27,16 +27,16 @@ export default function sketch(p5, id="canvas"){
     p5.ellipse(currentX, currentY, 80, 80)
   }
   */
-}
-
-function algorithm(p5){
-  //white dot from the right to the left
-  p5.background(0);
-  currentX = currentX - 5;
-  if (currentX <= 40){
-    currentX=p5.width - 40;
   }
-  p5.ellipse(currentX, currentY, 80, 80)
-}
+
+  function algorithm(p5){
+    //white dot from the right to the left
+    p5.background(0);
+    currentX = currentX - 5;
+    if (currentX <= 40){
+      currentX=p5.width - 40;
+    }
+    p5.ellipse(currentX, currentY, 80, 80)
+  }
 
 }

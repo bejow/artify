@@ -19,30 +19,34 @@ export default class SettingsDisplay extends React.Component{
                         type="checkbox"
                         checked={this.props.option1}
                         name="option1"
+                        onChange={this.props.onOptionChange}
                     />
-                    <p>option 1</p>
+                    <p>no stroke</p>
                 </div>
                 <div className="settingsRow">
                     <input 
                         type="checkbox"
-                        checked={this.props.option1}
-                        name="option1"
+                        checked={this.props.option2}
+                        name="option2"
+                        onChange={this.props.onOptionChange}
                     />
-                    <p>option 2</p>
+                    <p>option2</p>
                 </div>
                 <div className="settingsRow">
                     <input 
                         type="checkbox"
-                        checked={this.props.option1}
-                        name="option1"
+                        checked={this.props.option3}
+                        name="option3"
+                        onChange={this.props.onOptionChange}
                     />   
                     <p>option 3</p>
                 </div> 
                 <div className="settingsRow">                    
                     <input 
                         type="checkbox"
-                        checked={this.props.option1}
-                        name="option1"
+                        checked={this.props.option4}
+                        name="option4"
+                        onChange={this.props.onOptionChange}
                     />    
                     <p>option 4</p>
                 </div>        
