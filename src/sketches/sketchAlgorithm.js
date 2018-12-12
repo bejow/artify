@@ -1,6 +1,6 @@
 import {getRandomInt, positionAfterStep, isPositionOnCanvas} from '../helper/drawHelperFunctions';
 
-export default function sketchAlgorithm(p5, id="canvas"){
+export default function sketchAlgorithm(p5){
     let canvasHeight = 200;
     let canvasWidth = 200;
     let newPosition;
@@ -17,7 +17,8 @@ export default function sketchAlgorithm(p5, id="canvas"){
     var optionVal;
   
     p5.setup = function () {
-      p5.createCanvas(canvasWidth, canvasHeight);
+      //p5.createCanvas(canvasWidth, canvasHeight);
+      p5.createCanvas(p5.windowWidth, p5.windowHeight);
       currentX = canvasWidth/2;
       currentY = canvasHeight/2;
       p5.frameRate(60);

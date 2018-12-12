@@ -5,6 +5,10 @@ import SettingsDisplay from '../components/SettingsDisplay';
 import P5Wrapper from 'react-p5-wrapper';
 import sketch from '../sketches/sketch'
 import sketchAlgorithm from '../sketches/sketchAlgorithm';
+//import {NavSidebar} from '../components/NavSidebar.js'
+import {MainContainer} from '../components/MainContainer.js';
+import {NavSidebar} from '../components/NavSidebar.js';
+import {SongDisplay} from '../components/SongDisplay';
 export default class MainView extends React.Component{
     constructor(){
         super();
@@ -36,8 +40,12 @@ export default class MainView extends React.Component{
     }
 
     componentDidMount(){
+        /*
         var height = document.getElementById('canvas').clientHeight
         var width = document.getElementById('canvas').clientWidth
+*/
+        var height = this.refs.canvas.clientHeight;
+        var width = this.refs.canvas.clientWidth;
         this.setState({
             canvasWidth: width,
             canvasHeight: height,
@@ -46,6 +54,29 @@ export default class MainView extends React.Component{
 
     render(){
         console.log(this.state);
+        return(
+            <div>
+                <NavSidebar/>
+                <div ref="canvas" id="canvas" style={{width: "100%", height:"100vh", position:"absolute", left:"50%"}}/>
+
+                <div className="new-wrapper">
+                    <div id="main">
+                        <div id="main-contents">
+                            <P5Wrapper
+                                optionVal= {this.state.option1+this.state.option2+this.state.option3+this.state.option4}
+                                sketch={sketchAlgorithm}
+                                canvasHeight={this.state.canvasHeight}
+                                canvasWidth={this.state.canvasWidth}
+                                currentSong={this.props.currentSong}
+                                currentSongData={this.props.currentSongData}
+                            />
+                            <SongDisplay song={this.props.currentSong}/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
+        /*
         return(
             <div style={{height:"100vh"}}>
                 <div className="upperPart">
@@ -73,5 +104,6 @@ export default class MainView extends React.Component{
                 </div>
             </div>
         )
+        */
     }
 }

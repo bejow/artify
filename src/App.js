@@ -5,7 +5,7 @@ import queryString from 'query-string';
 import {JsonDisplay} from './components/JsonDisplay';
 import Sketch from './components/Sketch';
 import {PlayHistory} from './components/PlayHistory';
-import './styles/style.css';
+//import './styles/style.css';
 import MainView from './views/MainView';
 
 const API_PROFILE_URL = 'https://api.spotify.com/v1/me';
@@ -46,7 +46,7 @@ class App extends Component {
       access_token,
       refresh_token,
     }, () => {
-      this.initPlayHistory();
+      this.initSongData();
     })
   }
 
@@ -64,6 +64,13 @@ class App extends Component {
           loaded:true,
         })
       })
+    });
+  }
+
+  initSongData(){
+    //requests the songdata for displaying a play history
+    this.fetchApi(this.state.access_token, API_CURRENTLY_PLAYING_URL, this.addCurrentlyPlayingTrack, () => {
+      this.fetchAnalyseSong(this.state.currentSong.id);
     });
   }
 
