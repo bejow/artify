@@ -1,9 +1,13 @@
-import {getRandomInt, positionAfterStep, isPositionOnCanvas} from '../helper/drawHelperFunctions';
+import {getRandomInt, parseValueToSteprange, positionAfterStep, isPositionOnCanvas, parseValueToColors, mapTo} from '../helper/drawHelperFunctions';
+import {rainbowColors, warmColors, coldColors, mountainColors} from '../helper/colors';
 
 export default function sketchAlgorithm(p5){
     let canvasHeight = 200;
     let canvasWidth = 200;
+    var ellipseWidth = 80;
+    var ellipseHeight = 80;
     let newPosition;
+    var stepRange = [1,5];
     var red = 10;
     var green = 10;
     var blue = 10;
@@ -15,13 +19,18 @@ export default function sketchAlgorithm(p5){
     var currentSong;
     var currentSongData;
     var optionVal;
+    var loaded = false;
+    var colorPalette;
+    var currentColor = [255,255,255];
+    var randomColorIndex;
   
     p5.setup = function () {
       //p5.createCanvas(canvasWidth, canvasHeight);
       p5.createCanvas(p5.windowWidth, p5.windowHeight);
       currentX = canvasWidth/2;
       currentY = canvasHeight/2;
-      p5.frameRate(60);
+      p5.frameRate(50);
+      p5.textAlign(p5.CENTER, p5.CENTER);
     }
 /*
     p5.mousePressed = function () {
@@ -35,16 +44,29 @@ export default function sketchAlgorithm(p5){
       canvasWidth = props.canvasWidth;
       currentSong = props.currentSong;
       optionVal = props.optionVal
-      if (props.currentSongData) currentSongData = props.currentSongData.audio_features[0];
+      if (props.currentSongData){
+          currentSongData = props.currentSongData.audio_features[0];
+          loaded = true;
+      }
       console.log(currentSongData);      
     }
   
     p5.draw = function () {
-        if(optionVal==0){
-            randomBars(p5)
+
+        if (loaded){
+            if(optionVal==0){
+                spotifySongData(p5);
+            }
+
+            if(optionVal==2){
+                randomBars(p5)
+            }
+            if(optionVal>=1){
+                randomBarsNoStroke(p5)
+            }
         }
-        if(optionVal>=1){
-            randomBarsNoStroke(p5)
+        else {
+            p5.text("song not loaded yet")
         }
       
       /*p5.background(0);
@@ -63,14 +85,14 @@ export default function sketchAlgorithm(p5){
             blue = getRandomInt(0,255)
             red = getRandomInt(0,255)
             green = getRandomInt(0,255)
-            steps = getRandomInt(1, 5);
+            steps = getRandomInt(stepRange[0], stepRange[1]);
             currentDirection = getRandomInt(0,7);
         } while (!isPositionOnCanvas(positionAfterStep(currentX, currentY, currentDirection, stepSize*steps), p5.width, p5.height, 40))
     }
     newPosition = positionAfterStep(currentX, currentY, currentDirection, stepSize);
     currentX = newPosition[0];
     currentY = newPosition[1];
-    p5.ellipse(currentX, currentY, 80, 80);
+    p5.ellipse(currentX, currentY, ellipseWidth, ellipseHeight);
     p5.fill(red,green,blue);    
     p5.stroke(0);
     steps--;
@@ -82,15 +104,38 @@ export default function sketchAlgorithm(p5){
             blue = getRandomInt(0,255)
             red = getRandomInt(0,255)
             green = getRandomInt(0,255)
-            steps = getRandomInt(5, 20);
+            steps = getRandomInt(stepRange[0], stepRange[1]);
             currentDirection = getRandomInt(0,7);
         } while (!isPositionOnCanvas(positionAfterStep(currentX, currentY, currentDirection, stepSize*steps), p5.width, p5.height, 40))
     }
     newPosition = positionAfterStep(currentX, currentY, currentDirection, stepSize);
     currentX = newPosition[0];
     currentY = newPosition[1];
-    p5.ellipse(currentX, currentY, 80, 80);
+    p5.ellipse(currentX, currentY, ellipseWidth, ellipseHeight);
     p5.fill(red,green,blue);
+    p5.noStroke();
+    steps--;
+  }
+
+  function spotifySongData(p5){
+    colorPalette = parseValueToColors(currentSongData.energy)
+    stepRange = parseValueToSteprange(currentSongData.tempo);
+    ellipseHeight = mapTo(currentSongData.liveness, 0, 1, 0, 80);
+    ellipseWidth = mapTo(currentSongData.liveness, 0, 1, 0, 80);
+    if (steps <= 0){
+        do {
+            randomColorIndex = getRandomInt(0,colorPalette.length-1)
+            currentColor = colorPalette[randomColorIndex];
+
+            steps = getRandomInt(stepRange[0], stepRange[1]);
+            currentDirection = getRandomInt(0,7);
+        } while (!isPositionOnCanvas(positionAfterStep(currentX, currentY, currentDirection, stepSize*steps), p5.width, p5.height, 40))
+    }
+    newPosition = positionAfterStep(currentX, currentY, currentDirection, stepSize);
+    currentX = newPosition[0];
+    currentY = newPosition[1];
+    p5.ellipse(currentX, currentY, ellipseWidth, ellipseHeight);
+    p5.fill(currentColor[0],currentColor[1],currentColor[2]);
     p5.noStroke();
     steps--;
   }

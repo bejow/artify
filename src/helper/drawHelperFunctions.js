@@ -1,3 +1,5 @@
+import {rainbowColors, warmColors, coldColors, mountainColors} from './colors';
+
 export function getRandomInt(min, max) {
     //returns a random int between (inclusive) min and max
     min = Math.ceil(min);
@@ -14,6 +16,30 @@ export function isPositionOnCanvas(position, canvasWidth, canvasHeight, padding)
         }
     }
     return false;
+}
+
+export function mapTo(value, fromMin, fromMax, toMin, toMax){
+    return (value - fromMin) * (toMax - toMin) / (fromMax - fromMin) + toMin
+}
+
+export function parseValueToColors(value){
+    if (value > 0.85){
+        return rainbowColors;
+    }
+    if (value > 0.6){
+        return mountainColors;
+    }
+    return coldColors
+}
+
+export function parseValueToSteprange(value){
+    if (value < 90){
+        return [8,20];
+    }
+    if (value < 130){
+        return [4,10];
+    }
+    return [1,5];
 }
 
 export function positionAfterStep(currentX, currentY, direction, steps){
