@@ -26,7 +26,7 @@ export default function sketchAlgorithm(p5){
   
     p5.setup = function () {
       //p5.createCanvas(canvasWidth, canvasHeight);
-      p5.createCanvas(p5.windowWidth, p5.windowHeight);
+      p5.createCanvas(canvasWidth, canvasHeight);
       currentX = canvasWidth/2;
       currentY = canvasHeight/2;
       p5.frameRate(50);
@@ -46,7 +46,11 @@ export default function sketchAlgorithm(p5){
       optionVal = props.optionVal
       if (props.currentSongData){
           currentSongData = props.currentSongData.audio_features[0];
+          if (!loaded){
+            p5.background(255);
+          }
           loaded = true;
+          
       }
       console.log(currentSongData);      
     }
@@ -66,7 +70,9 @@ export default function sketchAlgorithm(p5){
             }
         }
         else {
-            p5.text("song not loaded yet")
+            p5.background(155)
+            p5.text("Song not loaded. Are you listening to music on spotify?", canvasWidth/2, canvasHeight/2)
+            
         }
       
       /*p5.background(0);
@@ -118,10 +124,11 @@ export default function sketchAlgorithm(p5){
   }
 
   function spotifySongData(p5){
+    stepSize = mapTo(currentSongData.danceability, 0, 1, 3, 15); 
     colorPalette = parseValueToColors(currentSongData.energy)
     stepRange = parseValueToSteprange(currentSongData.tempo);
-    ellipseHeight = mapTo(currentSongData.liveness, 0, 1, 0, 80);
-    ellipseWidth = mapTo(currentSongData.liveness, 0, 1, 0, 80);
+    ellipseHeight = mapTo(currentSongData.liveness, 0, 1, 10, 80);
+    ellipseWidth = mapTo(currentSongData.liveness, 0, 1, 10, 80);
     if (steps <= 0){
         do {
             randomColorIndex = getRandomInt(0,colorPalette.length-1)
@@ -134,9 +141,11 @@ export default function sketchAlgorithm(p5){
     newPosition = positionAfterStep(currentX, currentY, currentDirection, stepSize);
     currentX = newPosition[0];
     currentY = newPosition[1];
-    p5.ellipse(currentX, currentY, ellipseWidth, ellipseHeight);
-    p5.fill(currentColor[0],currentColor[1],currentColor[2]);
     p5.noStroke();
+    p5.fill(currentColor[0],currentColor[1],currentColor[2]);
+
+    p5.ellipse(currentX, currentY, ellipseWidth, ellipseHeight);
+    
     steps--;
   }
 }

@@ -46,14 +46,18 @@ class App extends Component {
       access_token,
       refresh_token,
     }, () => {
-      this.interval = setInterval(() => this.initSongData(), 1000);
+      this.interval = setInterval(() => this.initSongData(), 3000);
     })
   }
 
   fetchAnalyseSong(songId){
     this.fetchApi(this.state.access_token, 
       API_AUDIO_FEATURES_URL+'?ids='+songId, 
-      (data) => {this.setState({analyzedSong:data})} )
+      (data) => {
+        this.setState({
+          analyzedSong:data,
+          loaded:true,
+      })} )
   }
 
   initPlayHistory(){
@@ -70,7 +74,9 @@ class App extends Component {
   initSongData(){
     //requests the songdata for displaying a play history
     this.fetchApi(this.state.access_token, API_CURRENTLY_PLAYING_URL, this.addCurrentlyPlayingTrack, () => {
-      this.fetchAnalyseSong(this.state.currentSong.id);
+      if (this.state.currentSong){
+        this.fetchAnalyseSong(this.state.currentSong.id);
+      }
     });
   }
 

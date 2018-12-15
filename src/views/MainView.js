@@ -57,11 +57,10 @@ export default class MainView extends React.Component{
         return(
             <div>
                 <NavSidebar/>
-                <div ref="canvas" id="canvas" style={{width: "100%", height:"80vh", position:"absolute", left:"50%"}}/>
 
                 <div className="new-wrapper">
                     <div id="main">
-                        <div id="main-contents">
+                        <div ref="canvas" id="canvas" style={{height:"90vh"}} >
                             <P5Wrapper
                                 optionVal= {this.state.option1+this.state.option2+this.state.option3+this.state.option4}
                                 sketch={sketchAlgorithm}

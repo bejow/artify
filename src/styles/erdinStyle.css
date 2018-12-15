@@ -12,12 +12,6 @@ body {
     background-color: #fff;
   }
   
-  #main {
-    padding: 4% 1.5em;
-    max-width: 80vw;
-    margin: 0 auto;
-  }
-  
   #header {
     padding: 1.5em;
     margin: 0 0 1em 0;
@@ -31,6 +25,10 @@ body {
   
   }
   
+  #defaultCanvas0{
+      height:80%;
+      width:100%;
+  }
   
   /* Menu Styles */
   
