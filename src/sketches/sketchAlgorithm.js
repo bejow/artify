@@ -6,6 +6,7 @@ export default function sketchAlgorithm(p5){
     let canvasWidth = 200;
     var ellipseWidth = 80;
     var ellipseHeight = 80;
+    var circleSize = 20;
     let newPosition;
     var stepRange = [1,5];
     var red = 10;
@@ -124,13 +125,14 @@ export default function sketchAlgorithm(p5){
   }
 
   function spotifySongData(p5){
-    stepSize = mapTo(currentSongData.danceability, 0, 1, 3, 15); 
+    stepSize = mapTo(currentSongData.danceability, 0, 1, 3, 20); 
     colorPalette = parseValueToColors(currentSongData.energy)
     stepRange = parseValueToSteprange(currentSongData.tempo);
     ellipseHeight = mapTo(currentSongData.liveness, 0, 1, 10, 80);
     ellipseWidth = mapTo(currentSongData.liveness, 0, 1, 10, 80);
     if (steps <= 0){
         do {
+
             randomColorIndex = getRandomInt(0,colorPalette.length-1)
             currentColor = colorPalette[randomColorIndex];
 
@@ -138,13 +140,14 @@ export default function sketchAlgorithm(p5){
             currentDirection = getRandomInt(0,7);
         } while (!isPositionOnCanvas(positionAfterStep(currentX, currentY, currentDirection, stepSize*steps), p5.width, p5.height, 40))
     }
+    circleSize = getRandomInt(ellipseWidth*1.25, ellipseWidth*0.75)
     newPosition = positionAfterStep(currentX, currentY, currentDirection, stepSize);
     currentX = newPosition[0];
     currentY = newPosition[1];
     p5.noStroke();
     p5.fill(currentColor[0],currentColor[1],currentColor[2]);
 
-    p5.ellipse(currentX, currentY, ellipseWidth, ellipseHeight);
+    p5.ellipse(currentX, currentY, circleSize, circleSize);
     
     steps--;
   }
