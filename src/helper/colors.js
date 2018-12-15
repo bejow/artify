@@ -25,6 +25,34 @@ export const mountainBlue = [104,130,158];
 export const mountainYellow = [174,189,56];
 export const mountainGreen = [89,130,52];
 
+export const sadBlack = [29,30,31];
+export const sadDarkGrey = [40,43,46];
+export const sadGrey = [53,57,61];
+export const sadLightGrey = [62,73,84];
+export const sadLightBlue = [69,85,102];
+
+//export const beeDarkGrey = [41,41,41];
+export const beeGrey = [88,88,88];
+export const beeYellow = [255,200,21];
+export const beeWhite = [255,255,255];
+export const beeBlack = [0,0,0];
+
+export const beeColors = [
+    //beeDarkGrey,
+    beeGrey,
+    beeYellow,
+    beeWhite, 
+    beeBlack
+]
+
+export const sadColors = [
+    sadBlack,
+    sadDarkGrey, 
+    sadGrey,
+    sadLightGrey,
+    sadLightBlue
+]
+
 export const mountainColors = [
     mountainGray,
     mountainBlue,

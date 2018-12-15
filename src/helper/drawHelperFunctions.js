@@ -1,4 +1,4 @@
-import {rainbowColors, warmColors, coldColors, mountainColors} from './colors';
+import {rainbowColors, sadColors, beeColors, warmColors, coldColors, mountainColors} from './colors';
 
 export function getRandomInt(min, max) {
     //returns a random int between (inclusive) min and max
@@ -23,21 +23,28 @@ export function mapTo(value, fromMin, fromMax, toMin, toMax){
 }
 
 export function parseValueToColors(value){
-    if (value > 0.85){
-        return rainbowColors;
+    if(value > 0.9){
+        return rainbowColors
+    }
+    if (value > 0.8){
+        return beeColors;
+    }
+    if (value > 0.7){
+        return warmColors;
     }
     if (value > 0.6){
-        return mountainColors;
+        return coldColors;
     }
-    return coldColors
+    return sadColors
+    
 }
 
 export function parseValueToSteprange(value){
     if (value < 90){
-        return [8,20];
+        return [5,15];
     }
     if (value < 130){
-        return [4,10];
+        return [3,7];
     }
     return [1,5];
 }

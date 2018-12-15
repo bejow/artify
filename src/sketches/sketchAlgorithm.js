@@ -125,11 +125,11 @@ export default function sketchAlgorithm(p5){
   }
 
   function spotifySongData(p5){
-    stepSize = mapTo(currentSongData.danceability, 0, 1, 3, 20); 
+    stepSize = mapTo(currentSongData.danceability, 0, 1, 3, 10); 
     colorPalette = parseValueToColors(currentSongData.energy)
     stepRange = parseValueToSteprange(currentSongData.tempo);
-    ellipseHeight = mapTo(currentSongData.liveness, 0, 1, 10, 80);
-    ellipseWidth = mapTo(currentSongData.liveness, 0, 1, 10, 80);
+    ellipseHeight = mapTo(currentSongData.liveness, 0, 1, 6, 40);
+    ellipseWidth = mapTo(currentSongData.liveness, 0, 1, 6, 40);
     if (steps <= 0){
         do {
 
