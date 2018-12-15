@@ -60,7 +60,7 @@ export default class MainView extends React.Component{
 
                 <div className="new-wrapper">
                     <div id="main">
-                        <div ref="canvas" id="canvas" style={{height:"90vh"}} >
+                        <div ref="canvas" id="canvas" style={{height:"98vh"}} >
                             <P5Wrapper
                                 optionVal= {this.state.option1+this.state.option2+this.state.option3+this.state.option4}
                                 sketch={sketchAlgorithm}
