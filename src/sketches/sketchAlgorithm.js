@@ -140,7 +140,7 @@ export default function sketchAlgorithm(p5){
             currentDirection = getRandomInt(0,7);
         } while (!isPositionOnCanvas(positionAfterStep(currentX, currentY, currentDirection, stepSize*steps), p5.width, p5.height, 40))
     }
-    circleSize = getRandomInt(ellipseWidth*1.25, ellipseWidth*0.75)
+    circleSize = getRandomInt(ellipseWidth*1.4, ellipseWidth*0.6)
     newPosition = positionAfterStep(currentX, currentY, currentDirection, stepSize);
     currentX = newPosition[0];
     currentY = newPosition[1];

@@ -40,11 +40,17 @@ export function parseValueToColors(value){
 }
 
 export function parseValueToSteprange(value){
-    if (value < 90){
-        return [5,15];
+    if (value < 85){
+        return [10,23];
+    }
+    if (value < 100){
+        return [8,20];
+    }
+    if (value < 115){
+        return [4,13];
     }
     if (value < 130){
-        return [3,7];
+        return [3,9];
     }
     return [1,5];
 }

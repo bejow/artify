@@ -26,6 +26,10 @@ body {
   
   }
 
+  #main {
+      height:100%;
+  }
+
   #defaultCanvas0{
     height:80%;
     width:100%;
