@@ -53,8 +53,8 @@ export default function sketchAlgorithm(p5){
       optionVal = props.optionVal
       if (save === false && props.save === true){
             p5.save("artify.jpg");
-            save = props.save;
       }
+      save = props.save;
       if (props.currentSongData){
           currentSongData = props.currentSongData.audio_features[0];
           if (!loaded){

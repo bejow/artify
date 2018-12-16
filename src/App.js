@@ -51,7 +51,7 @@ class App extends Component {
       access_token,
       refresh_token,
     }, () => {
-      this.interval = setInterval(() => this.initSongData(), 3000);
+      this.interval = setInterval(() => this.initSongData(), 10000);
     })
   }
 

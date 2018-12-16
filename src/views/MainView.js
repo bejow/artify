@@ -62,7 +62,7 @@ export default class MainView extends React.Component{
     save(){
         this.setState({
             save: true
-        }, this.setState({
+        }, () => this.setState({
             save:false
         }))
     }
@@ -74,7 +74,7 @@ export default class MainView extends React.Component{
     }
 
     render(){
-        console.log(this.state);
+        console.log(this.state.save);
         return(
             <div>
                {/* <NavSidebar/>*/}
