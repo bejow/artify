@@ -18,6 +18,7 @@ const API_PLAY_URL = 'https://api.spotify.com/v1/me/player/play';//put
 const API_PAUSE_URL = 'https://api.spotify.com/v1/me/player/pause';//put
 const API_AVAILABLE_PLAYER_URL = 'https://api.spotify.com/v1/me/player/devices';
 const API_AUDIO_FEATURES_URL = 'https://api.spotify.com/v1/audio-features';
+const API_REFRESH_TOKEN_URL = 'https://spotify-artwork-backend.herokuapp.com/refresh_token';
 
 class App extends Component {
   constructor(){
@@ -36,6 +37,7 @@ class App extends Component {
     this.addTracksFromJsonResponse = this.addTracksFromJsonResponse.bind(this);
     this.addCurrentlyPlayingTrack = this.addCurrentlyPlayingTrack.bind(this);
     this.fetchAnalyseSong = this.fetchAnalyseSong.bind(this);
+    this.refreshToken = this.refreshToken.bind(this);
   }
 
   componentDidMount(){
@@ -60,6 +62,27 @@ class App extends Component {
           loaded:true,
       })} )
   }
+
+  refreshToken(){
+    console.log("test");
+    const options = {
+      headers: { },
+      method:'GET'
+    }
+    fetch(API_REFRESH_TOKEN_URL+`?refresh_token=${this.state.refresh_token}`, options)
+      .then((response) => {
+        console.log(response);
+        console.log(response.body);
+        return response.text();
+      })
+      .then((text) => {
+        var data;
+        text ? data = JSON.parse(text) : data = {};
+        this.setState({
+          access_token:data.access_token
+        })
+      })
+    }
 
   initPlayHistory(){
     //requests the songdata for displaying a play history
@@ -93,16 +116,27 @@ class App extends Component {
     },callback?callback:null)
   }
 
+  setRefreshToken(jsonResponse){
+    this.setState({
+      access_token: jsonResponse.access_token
+    })
+  }
+
   addCurrentlyPlayingTrack(jsonResponse, callback){
     this.setState({
       currentSong: jsonResponse.item
     }, callback?callback:null)
   }
 
-  putApi(access_token, url, processDataFunction){
+  postApi(bodyParams, access_token, url, processDataFunction){
     const options = {
-      headers: { 'Authorization': 'Bearer ' + access_token },
-      method:'PUT',
+      headers: { 
+        'Authorization': 'Bearer ' + access_token,
+        "Access-Control-Allow-Origin":"*",
+    },
+      method:'POST',
+      mode:'cors',
+      body: JSON.stringify(bodyParams)
     }
     fetch(url, options)
     .then((response) => {
@@ -130,6 +164,9 @@ class App extends Component {
     fetch(url, options)
     .then((response) => {
       console.log(response);
+      if (!response.ok){
+        this.refreshToken();
+      }
       return response.text();
     })
     .then((text) => {
@@ -146,6 +183,8 @@ class App extends Component {
       }
     })
   }
+
+
 
   redirectToLogin(){
     window.location = window.location.href.includes("localhost")
@@ -197,10 +236,12 @@ class App extends Component {
       
         if (this.state.access_token){
           return (
+            <div>
             <MainView
               onStart={this.fetchAnalyseSong}
               currentSong={this.state.currentSong}
               currentSongData={this.state.analyzedSong}/>
+              </div>
             );
         }
         else{

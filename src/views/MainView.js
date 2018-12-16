@@ -81,7 +81,7 @@ export default class MainView extends React.Component{
                         </div>
                         <div>
                             <BurgerButton active={this.state.sidebar} onClick={this.toggleSidebar}/>
-                            <BottomMenu song={this.props.currentSong} active={this.state.sidebar}/>
+                            <BottomMenu song={this.props.currentSong} onClick={this.toggleSidebar} active={this.state.sidebar}/>
                             </div>
                 </div>
             </div>
