@@ -9,11 +9,15 @@ import sketchAlgorithm from '../sketches/sketchAlgorithm';
 import {MainContainer} from '../components/MainContainer.js';
 import {NavSidebar} from '../components/NavSidebar.js';
 import {SongDisplay} from '../components/SongDisplay';
+import {BottomMenu} from '../components/BottomMenu';
+import { BurgerButton } from '../components/BurgerButton';
+
 export default class MainView extends React.Component{
     constructor(){
         super();
         this.state = {
             draw:false,
+            sidebar:false,
             mouseX:16,
             canvasWidth:null,
             canvasHeight:null,
@@ -24,6 +28,7 @@ export default class MainView extends React.Component{
         }
         this.onStartButtonClick = this.onStartButtonClick.bind(this);
         this.onOptionChange = this.onOptionChange.bind(this);
+        this.toggleSidebar = this.toggleSidebar.bind(this);
     }
     onSetAppState = (newState, cb) => this.setState(newState, cb);
 
@@ -52,15 +57,19 @@ export default class MainView extends React.Component{
         });
     }
 
+    toggleSidebar(){
+        this.setState({
+            sidebar: (this.state.sidebar+1)%2,
+        });
+    }
+
     render(){
         console.log(this.state);
         return(
             <div>
-                <NavSidebar/>
-
-                <div className="new-wrapper">
+               {/* <NavSidebar/>*/}
                     <div id="main">
-                        <div ref="canvas" id="canvas" style={{height:"99vh"}} >
+                        <div ref="canvas" id="canvas" style={{height:"100vh"}} >
                             <P5Wrapper
                                 optionVal= {this.state.option1+this.state.option2+this.state.option3+this.state.option4}
                                 sketch={sketchAlgorithm}
@@ -69,9 +78,11 @@ export default class MainView extends React.Component{
                                 currentSong={this.props.currentSong}
                                 currentSongData={this.props.currentSongData}
                             />
-                            <SongDisplay song={this.props.currentSong}/>
                         </div>
-                    </div>
+                        <div>
+                            <BurgerButton active={this.state.sidebar} onClick={this.toggleSidebar}/>
+                            <BottomMenu song={this.props.currentSong} active={this.state.sidebar}/>
+                            </div>
                 </div>
             </div>
         )

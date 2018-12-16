@@ -1,8 +1,10 @@
-body {
-    font-family: 'Work Sans', sans-serif;
+body, html{
     margin: 0;
-    background-color: #eee;
-  }
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    font-family: sans-serif;
+}
   
   /* Layout */
   
@@ -54,16 +56,75 @@ body {
       background: #000;
   }
 
+  .sidebar {
+    float: left;
+    height: 100px; 
+    display:flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;    
+    background: #2c3e50;
+    overflow: hidden;
+    margin-bottom: -100px;
+    transition: 0.8s all; 
+    position: fixed;
+     bottom: 0;
+}
+
+.side {
+    margin-bottom: 0;
+}
+
+.sidebar ul {
+    margin: 0;
+    padding: 0;
+}
+
+.sidebar ul li {
+    list-style: none;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    color: white;
+    height: 80px;
+    width: 100%;
+    font-size: 40px;
+    line-height: 80px;
+    text-align: center;
+    display: block;
+    transition: 06.s all;
+}
+
+.sidebar ul li a:hover {
+    background: #34495e;
+}
+
+.btnc {
+    color:red;
+    font-size: 200px;
+    bottom: 110px !important;
+}
+
+.btn {
+    transition: 0.8s all !important;
+    float:left;
+    padding: 0 10px;
+    font-size: 40px;
+    text-decoration: none;
+    color: #2c3e50;
+    font-family: IonIcons;
+    cursor: pointer;
+    position: fixed;
+    left: 10px;
+    bottom: 10px;
+}
+  
   .songDisplayText{
     color: #fff;
     font-family: 'Open Sans', sans-serif;
     letter-spacing: 0.1em;
     font-style: normal;
-    text-shadow:
-     -1px -1px 0 #777,  
-      1px -1px 0 #777,
-      -1px 1px 0 #777,
-       1px 1px 0 #777;
   }
   
   .menu ul {

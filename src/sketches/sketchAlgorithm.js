@@ -24,6 +24,11 @@ export default function sketchAlgorithm(p5){
     var colorPalette;
     var currentColor = [255,255,255];
     var randomColorIndex;
+    var openSans = p5.loadFont('../fonts/OpenSans-Regular.ttf');
+
+    p5.preload = function() {
+        openSans = p5.loadFont('./fonts/OpenSans-Regular.ttf');
+    }
   
     p5.setup = function () {
       //p5.createCanvas(canvasWidth, canvasHeight);
@@ -71,7 +76,9 @@ export default function sketchAlgorithm(p5){
             }
         }
         else {
-            p5.background(155)
+            p5.background(230)
+            p5.textFont(openSans);
+            p5.textSize(18);
             p5.text("Song not loaded. Are you listening to music on spotify?", canvasWidth/2, canvasHeight/2)
             
         }
@@ -144,7 +151,7 @@ export default function sketchAlgorithm(p5){
     newPosition = positionAfterStep(currentX, currentY, currentDirection, stepSize);
     currentX = newPosition[0];
     currentY = newPosition[1];
-    p5.noStroke();
+    //p5.noStroke();
     p5.fill(currentColor[0],currentColor[1],currentColor[2]);
 
     p5.ellipse(currentX, currentY, circleSize, circleSize);

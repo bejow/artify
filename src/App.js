@@ -7,6 +7,7 @@ import Sketch from './components/Sketch';
 import {PlayHistory} from './components/PlayHistory';
 //import './styles/style.css';
 import MainView from './views/MainView';
+import {LoginView} from './views/LoginView';
 
 const API_PROFILE_URL = 'https://api.spotify.com/v1/me';
 const API_RECENTLY_PLAYED_URL = 'https://api.spotify.com/v1/me/player/recently-played'; 
@@ -146,6 +147,12 @@ class App extends Component {
     })
   }
 
+  redirectToLogin(){
+    window.location = window.location.href.includes("localhost")
+      ?'http://localhost:8888/login'
+      :'https://spotify-artwork-backend.herokuapp.com';
+  }
+
   renderPlayHistory(){
     return this.state.loaded ? <PlayHistory 
         onSongClick={this.fetchAnalyseSong}
@@ -187,12 +194,20 @@ class App extends Component {
       )
     }
     else{
-      return (
-      <MainView
-        onStart={this.fetchAnalyseSong}
-        currentSong={this.state.currentSong}
-        currentSongData={this.state.analyzedSong}/>
-      );
+      
+        if (this.state.access_token){
+          return (
+            <MainView
+              onStart={this.fetchAnalyseSong}
+              currentSong={this.state.currentSong}
+              currentSongData={this.state.analyzedSong}/>
+            );
+        }
+        else{
+            return(
+              <LoginView onClick={this.redirectToLogin}/>
+            )
+        }
     }
   }
 
