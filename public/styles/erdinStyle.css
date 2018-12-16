@@ -106,6 +106,10 @@ body, html{
     bottom: 110px !important;
 }
 
+.download{
+    left:50px !important;
+}
+
 .btn {
     transition: 0.8s all !important;
     float:left;

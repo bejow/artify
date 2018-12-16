@@ -18,6 +18,7 @@ export default class MainView extends React.Component{
         this.state = {
             draw:false,
             sidebar:false,
+            save:false,
             mouseX:16,
             canvasWidth:null,
             canvasHeight:null,
@@ -29,6 +30,7 @@ export default class MainView extends React.Component{
         this.onStartButtonClick = this.onStartButtonClick.bind(this);
         this.onOptionChange = this.onOptionChange.bind(this);
         this.toggleSidebar = this.toggleSidebar.bind(this);
+        this.save = this.save.bind(this);
     }
     onSetAppState = (newState, cb) => this.setState(newState, cb);
 
@@ -57,6 +59,14 @@ export default class MainView extends React.Component{
         });
     }
 
+    save(){
+        this.setState({
+            save: true
+        }, this.setState({
+            save:false
+        }))
+    }
+
     toggleSidebar(){
         this.setState({
             sidebar: (this.state.sidebar+1)%2,
@@ -77,11 +87,13 @@ export default class MainView extends React.Component{
                                 canvasWidth={this.state.canvasWidth}
                                 currentSong={this.props.currentSong}
                                 currentSongData={this.props.currentSongData}
+                                save={this.state.save}
                             />
                         </div>
                         <div>
                             <BurgerButton active={this.state.sidebar} onClick={this.toggleSidebar}/>
-                            <BottomMenu song={this.props.currentSong} onClick={this.toggleSidebar} active={this.state.sidebar}/>
+                            <button className={this.state.sidebar?"btn btnc download":"btn download"} onClick={this.save}><i className="fa fa-download"></i></button>
+                            <BottomMenu song={this.props.currentSong} onClick={this.toggleSidebar} onSave={this.save} active={this.state.sidebar}/>
                             </div>
                 </div>
             </div>

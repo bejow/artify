@@ -19,6 +19,7 @@ export default function sketchAlgorithm(p5){
     var steps = 0;
     var currentSong;
     var currentSongData;
+    var save = false;
     var optionVal;
     var loaded = false;
     var colorPalette;
@@ -40,16 +41,20 @@ export default function sketchAlgorithm(p5){
     }
 /*
     p5.mousePressed = function () {
-        p5.setup();
+        p5.save("test.jpg");
         
     }
-  */
+*/
     p5.myCustomRedrawAccordingToNewPropsHandler = function(props){
       console.log(props);
       canvasHeight = props.canvasHeight;
       canvasWidth = props.canvasWidth;
       currentSong = props.currentSong;
       optionVal = props.optionVal
+      if (save === false && props.save === true){
+            p5.save("test");
+            save = props.save;
+      }
       if (props.currentSongData){
           currentSongData = props.currentSongData.audio_features[0];
           if (!loaded){

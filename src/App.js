@@ -252,8 +252,7 @@ class App extends Component {
         if (this.state.access_token){
           return (
             <div           onMouseEnter={this.handleMouseEnter}
-            onMouseMove={this.handleMouseMove}
-            onMouseLeave={this.handleMouseLeave}>
+            onMouseMove={this.handleMouseMove}>
             <MainView
               onStart={this.fetchAnalyseSong}
               currentSong={this.state.currentSong}
