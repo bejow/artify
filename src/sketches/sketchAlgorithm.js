@@ -156,7 +156,7 @@ export default function sketchAlgorithm(p5){
     newPosition = positionAfterStep(currentX, currentY, currentDirection, stepSize);
     currentX = newPosition[0];
     currentY = newPosition[1];
-    //p5.noStroke();
+    p5.noStroke();
     p5.fill(currentColor[0],currentColor[1],currentColor[2]);
 
     p5.ellipse(currentX, currentY, circleSize, circleSize);
