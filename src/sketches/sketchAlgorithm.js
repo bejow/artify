@@ -52,7 +52,7 @@ export default function sketchAlgorithm(p5){
       currentSong = props.currentSong;
       optionVal = props.optionVal
       if (save === false && props.save === true){
-            p5.save("test");
+            p5.save("artify.jpg");
             save = props.save;
       }
       if (props.currentSongData){
