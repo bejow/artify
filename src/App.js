@@ -51,7 +51,7 @@ class App extends Component {
       access_token,
       refresh_token,
     }, () => {
-      this.interval = setInterval(() => this.initSongData(), 10000);
+      this.interval = setInterval(() => this.initSongData(), 3000);
     })
   }
 
@@ -251,8 +251,7 @@ class App extends Component {
       
         if (this.state.access_token){
           return (
-            <div           onMouseEnter={this.handleMouseEnter}
-            onMouseMove={this.handleMouseMove}>
+            <div>
             <MainView
               onStart={this.fetchAnalyseSong}
               currentSong={this.state.currentSong}
