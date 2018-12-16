@@ -150,7 +150,7 @@ class App extends Component {
   redirectToLogin(){
     window.location = window.location.href.includes("localhost")
       ?'http://localhost:8888/login'
-      :'https://spotify-artwork-backend.herokuapp.com';
+      :'https://spotify-artwork-backend.herokuapp.com/login';
   }
 
   renderPlayHistory(){
