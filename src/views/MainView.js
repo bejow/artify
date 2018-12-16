@@ -79,6 +79,7 @@ export default class MainView extends React.Component{
             <div>
                {/* <NavSidebar/>*/}
                     <div id="main">
+                        <a href="/videos/artify_v1.mp4" className="logotype">ART<span>IFY</span></a>
                         <div ref="canvas" id="canvas" style={{height:"100vh"}} >
                             <P5Wrapper
                                 optionVal= {this.state.option1+this.state.option2+this.state.option3+this.state.option4}

@@ -84,7 +84,7 @@ export default function sketchAlgorithm(p5){
             p5.background(230)
             p5.textFont(openSans);
             p5.textSize(18);
-            p5.text("Song not loaded. Are you listening to music on spotify?", canvasWidth/2, canvasHeight/2)
+            p5.text("Song not loaded. \n Note: The app only works when you are listening to spotify music \nTroubleshoot: play a song on spotify / press F5, wait, draw a picture on your own", canvasWidth/2, canvasHeight/2)
             
         }
       

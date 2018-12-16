@@ -243,7 +243,17 @@ body, html{
   }
   
   
-  
+  .logotype {
+    position: absolute!important;
+    display: block;
+    text-align: center;
+    font-family: 'Artifika', serif;
+    text-transform: uppercase;
+    font-weight: 800;
+    color: #B3B3B3;
+    font-size: 21px;
+    padding: 10px;
+  }
   
   
   
