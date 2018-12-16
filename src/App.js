@@ -38,6 +38,8 @@ class App extends Component {
     this.addCurrentlyPlayingTrack = this.addCurrentlyPlayingTrack.bind(this);
     this.fetchAnalyseSong = this.fetchAnalyseSong.bind(this);
     this.refreshToken = this.refreshToken.bind(this);
+    this.handleMouseEnter = this.handleMouseEnter.bind(this)
+    this.handleMouseMove = this.handleMouseMove.bind(this)
   }
 
   componentDidMount(){
@@ -51,6 +53,17 @@ class App extends Component {
     }, () => {
       this.interval = setInterval(() => this.initSongData(), 3000);
     })
+  }
+
+  handleMouseEnter(e) {
+    console.log('onMouseEnter', e.clientX, e.clientY)
+  }
+  
+  handleMouseMove(e){
+    console.log(
+      'onMouseMove',
+      e.nativeEvent.clientX, e.nativeEvent.clientY
+    )
   }
 
   fetchAnalyseSong(songId){
@@ -203,7 +216,9 @@ class App extends Component {
   renderApp(){
     if (this.state.developerMode){
       return(
-        <div style={{height:"100vh"}}>
+        <div >
+          style={{height:"100vh"}} 
+
           <Sketch/>
           <header className="App-header">
             <JsonDisplay json={this.state.analyzedSong}/>
@@ -236,7 +251,9 @@ class App extends Component {
       
         if (this.state.access_token){
           return (
-            <div>
+            <div           onMouseEnter={this.handleMouseEnter}
+            onMouseMove={this.handleMouseMove}
+            onMouseLeave={this.handleMouseLeave}>
             <MainView
               onStart={this.fetchAnalyseSong}
               currentSong={this.state.currentSong}
